@@ -602,7 +602,7 @@ class Model(pl.LightningModule):
                 model_id = checkpoint
                 revision = None
 
-            if cache_dir is None:
+            if not cache_dir:
                 cache_dir = CACHE_DIR
 
             try:
