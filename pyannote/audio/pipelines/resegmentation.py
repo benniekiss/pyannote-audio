@@ -91,7 +91,7 @@ class Resegmentation(SpeakerDiarizationMixin, Pipeline):
         diarization: Text = "diarization",
         der_variant: Optional[dict] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
     ):
         super().__init__()
 

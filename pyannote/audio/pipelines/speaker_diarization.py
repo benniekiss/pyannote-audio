@@ -126,7 +126,7 @@ class SpeakerDiarization(SpeakerDiarizationMixin, Pipeline):
         segmentation_batch_size: int = 1,
         der_variant: Optional[dict] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
     ):
         super().__init__()
 

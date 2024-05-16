@@ -238,7 +238,7 @@ class SpeechBrainPretrainedSpeakerEmbedding(BaseInference):
         embedding: Text = "speechbrain/spkrec-ecapa-voxceleb",
         device: Optional[torch.device] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
     ):
         if not SPEECHBRAIN_IS_AVAILABLE:
             raise ImportError(
@@ -423,7 +423,7 @@ class ONNXWeSpeakerPretrainedSpeakerEmbedding(BaseInference):
         embedding: Text = "hbredin/wespeaker-voxceleb-resnet34-LM",
         device: Optional[torch.device] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
     ):
         if not ONNX_IS_AVAILABLE:
             raise ImportError(
@@ -662,7 +662,7 @@ class PyannoteAudioPretrainedSpeakerEmbedding(BaseInference):
         embedding: PipelineModel = "pyannote/embedding",
         device: Optional[torch.device] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
     ):
         super().__init__()
         self.embedding = embedding
@@ -729,7 +729,7 @@ def PretrainedSpeakerEmbedding(
     embedding: PipelineModel,
     device: Optional[torch.device] = None,
     use_auth_token: Union[Text, None] = None,
-    cache_dir: Union[Path, str, None] = None,
+    cache_dir: Union[Path, Text, None] = None,
 ):
     """Pretrained speaker embedding
 
@@ -828,7 +828,7 @@ class SpeakerEmbedding(Pipeline):
         embedding: PipelineModel = "pyannote/embedding",
         segmentation: Optional[PipelineModel] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
     ):
         super().__init__()
 

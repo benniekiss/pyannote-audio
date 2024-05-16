@@ -122,7 +122,7 @@ class OverlappedSpeechDetection(Pipeline):
         precision: Optional[float] = None,
         recall: Optional[float] = None,
         use_auth_token: Union[Text, None] = None,
-        cache_dir: Union[Path, str, None] = None,
+        cache_dir: Union[Path, Text, None] = None,
         **inference_kwargs,
     ):
         super().__init__()
