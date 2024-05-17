@@ -552,13 +552,6 @@ class Inference(BaseInference):
 
         num_chunks, num_frames_per_chunk, num_classes = scores.data.shape
 
-        chunks = scores.sliding_window
-        frames = SlidingWindow(
-            start=chunks.start,
-            duration=frames.duration,
-            step=frames.step,
-        )
-
         masks = 1 - np.isnan(scores)
         np.nan_to_num(scores.data, copy=False, nan=0.0)
 
