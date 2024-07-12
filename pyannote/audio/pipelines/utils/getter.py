@@ -22,6 +22,8 @@
 
 import itertools
 from typing import Dict, Mapping, Optional, Text, Union
+from pathlib import Path
+from typing import Mapping, Optional, Text, Union
 
 import torch
 from torch_audiomentations.core.transforms_interface import BaseWaveformTransform
@@ -29,6 +31,7 @@ from torch_audiomentations.utils.config import from_dict as augmentation_from_di
 
 from pyannote.audio import Inference, Model
 from pyannote.audio.core.calibration import Calibration
+from pyannote.audio.core.model import CACHE_DIR
 
 PipelineModel = Union[Model, Text, Mapping]
 
@@ -36,6 +39,7 @@ PipelineModel = Union[Model, Text, Mapping]
 def get_model(
     model: PipelineModel,
     use_auth_token: Union[Text, None] = None,
+    cache_dir: Union[Path, Text, None] = None,
 ) -> Model:
     """Load pretrained model and set it into `eval` mode.
 
@@ -50,6 +54,9 @@ def get_model(
         When loading a private or gated huggingface.co pipeline, set `use_auth_token`
         to True or to a string containing your hugginface.co authentication
         token that can be obtained by visiting https://hf.co/settings/tokens
+    cache_dir: Path or str, optional
+        Path to model cache directory. Defaults to content of PYANNOTE_CACHE
+        environment variable, or "~/.cache/torch/pyannote" when unset.
 
     Returns
     -------
@@ -69,16 +76,20 @@ def get_model(
 
     """
 
+    if not cache_dir:
+         cache_dir = CACHE_DIR
+
     if isinstance(model, Model):
         pass
 
     elif isinstance(model, Text):
         model = Model.from_pretrained(
-            model, use_auth_token=use_auth_token, strict=False
+            model, use_auth_token=use_auth_token, cache_dir=cache_dir, strict=False
         )
 
     elif isinstance(model, Mapping):
         model.setdefault("use_auth_token", use_auth_token)
+        model.setdefault("cache_dir", cache_dir)
         model = Model.from_pretrained(**model)
 
     else:
