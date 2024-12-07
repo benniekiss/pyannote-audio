@@ -171,7 +171,8 @@ class Pipeline(_Pipeline):
 
             with open(config_yml, "r") as fp:
                 config = yaml.load(fp, Loader=yaml.SafeLoader)
-            expand_subfolders(config, model_id, use_auth_token=use_auth_token)
+
+        expand_subfolders(config, model_id, use_auth_token=use_auth_token)
 
         if "version" in config:
             check_version(
