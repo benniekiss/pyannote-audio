@@ -129,9 +129,12 @@ class Pipeline(_Pipeline):
             Path to the folder where cached files are stored.
         """
 
+        # load checkpoint from a dict
+        if isinstance(checkpoint, dict):
+            config = checkpoint
         # if checkpoint is a directory, look for the pipeline checkpoint
         # inside this directory
-        if os.path.isdir(checkpoint):
+        elif os.path.isdir(checkpoint):
             model_id = Path(checkpoint)
             config_yml = model_id / AssetFileName.Pipeline.value
 
@@ -151,8 +154,9 @@ class Pipeline(_Pipeline):
             if config_yml is None:
                 return None
 
-        with open(config_yml, "r") as fp:
-            config = yaml.load(fp, Loader=yaml.SafeLoader)
+        if not isinstance(checkpoint, dict):
+            with open(config_yml, "r") as fp:
+                config = yaml.load(fp, Loader=yaml.SafeLoader)
 
         expand_subfolders(
             config, model_id, revision=revision, token=token, cache_dir=cache_dir
