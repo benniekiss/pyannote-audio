@@ -132,15 +132,19 @@ class Pipeline(_Pipeline):
         # load checkpoint from a dict
         if isinstance(checkpoint, dict):
             config = checkpoint
+            model_id = None
+            revision = None
         # if checkpoint is a directory, look for the pipeline checkpoint
         # inside this directory
         elif os.path.isdir(checkpoint):
             model_id = Path(checkpoint)
+            revision = None
             config_yml = model_id / AssetFileName.Pipeline.value
 
         # if checkpoint is a file, assume it is the pipeline checkpoint
         elif os.path.isfile(checkpoint):
             model_id = Path(checkpoint).parent
+            revision = None
             config_yml = checkpoint
 
         # otherwise, assume that the checkpoint is hosted on HF model hub
