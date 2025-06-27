@@ -150,19 +150,22 @@ class Pipeline(_Pipeline):
             Use at your own risk, as this may lead to unexpected behavior.
         """
 
+        # load checkpoint from a dict
+        if isinstance(checkpoint, dict):
+            model_id = Path.cwd()
+            revision = None
+            config = checkpoint
         # if checkpoint is a directory, look for the pipeline checkpoint
         # inside this directory
-        if os.path.isdir(checkpoint):
+        elif os.path.isdir(checkpoint):
             model_id = Path(checkpoint)
-            config_yml = model_id / AssetFileName.Pipeline.value
             revision = None
-
+            config_yml = model_id / AssetFileName.Pipeline.value
         # if checkpoint is a file, assume it is the pipeline checkpoint
         elif os.path.isfile(checkpoint):
             model_id = Path(checkpoint).parent
-            config_yml = checkpoint
             revision = None
-
+            config_yml = checkpoint
         # otherwise, assume that the checkpoint is hosted on HF model hub
         else:
             model_id, revision, config_yml = download_from_hf_hub(
@@ -174,13 +177,14 @@ class Pipeline(_Pipeline):
             if config_yml is None:
                 return None
 
-        with open(config_yml, "r") as fp:
-            config = yaml.load(fp, Loader=yaml.SafeLoader)
+        if not isinstance(checkpoint, dict):
+            with open(config_yml, "r") as fp:
+                config = yaml.load(fp, Loader=yaml.SafeLoader)
 
         # expand $model/{subfolder}-like entries in config
         expand_subfolders(
             config,
-            model_id,
+            model_id=model_id,
             revision=revision,
             token=token,
             cache_dir=cache_dir,
