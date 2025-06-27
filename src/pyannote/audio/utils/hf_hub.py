@@ -65,10 +65,18 @@ def download_from_hf_hub(
     `huggingface_hub.hf_hub_download`
     """
 
-    if "@" in checkpoint:
-        model_id, revision = checkpoint.split("@")
+    rev_parts = checkpoint.rsplit("@", maxsplit=1)
+    if len(rev_parts) == 2:
+        repo, revision = rev_parts
     else:
-        model_id, revision = checkpoint, None
+        repo, revision = rev_parts[0], None
+
+    if subfolder:
+        model_id = repo
+    else:
+        repo_parts = repo.split("/")
+        model_id = "/".join(repo_parts[:2])
+        subfolder = "/".join(repo_parts[2:])
 
     # if provided token does not start with 'hf_', it is likely a pyannoteAI API key
     # and therefore should not be passed to Huggingface Hub.
