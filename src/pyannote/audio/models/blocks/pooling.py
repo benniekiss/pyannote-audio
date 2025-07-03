@@ -100,7 +100,10 @@ class StatsPool(nn.Module):
 
         if weights is None:
             mean = sequences.mean(dim=-1)
-            std = sequences.std(dim=-1, correction=1)
+            if sequences.size(dim=-1) > 1:
+               std = sequences.std(dim=-1, correction=1)
+            else:
+                std = torch.zeros_like(mean)
             return torch.cat([mean, std], dim=-1)
 
         if weights.dim() == 2:
